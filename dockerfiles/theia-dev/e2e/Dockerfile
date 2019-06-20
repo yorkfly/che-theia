@@ -23,3 +23,7 @@ RUN git clone -b 'master' --single-branch --depth 1 https://github.com/eclipse-t
 # For example, vscode ripgrep downloading is an example of such case.
 RUN if [ -z $GITHUB_TOKEN ]; then unset GITHUB_TOKEN; fi && \
     cd theia && yarn
+
+ADD src/test-entrypoint.sh /test-entrypoint.sh
+
+CMD ["/test-entrypoint.sh"]

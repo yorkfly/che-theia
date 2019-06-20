@@ -13,3 +13,6 @@ check_github_limits
 
 init --name:theia-dev-e2e "$@"
 build
+if ! skip_tests; then
+  bash "${base_dir}"/test.sh "$@"
+fi
