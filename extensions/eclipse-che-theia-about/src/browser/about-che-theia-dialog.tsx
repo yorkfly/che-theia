@@ -41,7 +41,7 @@ export class AboutCheTheiaDialog extends AboutDialog {
         this.productInfo = await this.productService.getProduct();
         this.extensionsInfos = await this.appServer.getExtensionsInfos();
         this.update();
-        this.titleNode.textContent = this.productInfo.name;
+        this.titleNode.textContent = this.productInfo.name + ' This is a custom build for proxy test';
     }
 
     protected render(): React.ReactNode {

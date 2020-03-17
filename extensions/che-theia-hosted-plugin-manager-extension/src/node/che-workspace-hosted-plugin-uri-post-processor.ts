@@ -11,7 +11,7 @@
 import { injectable } from 'inversify';
 import URI from '@theia/core/lib/common/uri';
 import { HostedPluginUriPostProcessor } from '@theia/plugin-dev';
-import WorkspaceClient, { IRemoteAPI, IRestAPIConfig } from '@eclipse-che/workspace-client';
+import WorkspaceClient, { IRemoteAPI, IRestAPIConfig } from '@ivinokur/workspace-client';
 import { che } from '@eclipse-che/api';
 
 @injectable()
