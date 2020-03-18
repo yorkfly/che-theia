@@ -18,6 +18,7 @@ import { execute } from './exec';
 import * as git from './git';
 
 const CHE_TASK_TYPE = 'che';
+const SS_CRT_PATH = '/tmp/che/secret/ca.crt';
 
 /**
  * Enumeration ID's of ide actions.
@@ -204,6 +205,9 @@ export class TheiaImportZipCommand implements TheiaImportCommand {
             try {
                 // download
                 const wgetArgs = [this.locationURI!, '-O', this.zipfilePath];
+                if (fs.existsSync(SS_CRT_PATH)) {
+                    wgetArgs.push('--no-check-certificate');
+                }
                 await execute('wget', wgetArgs);
 
                 // expand
