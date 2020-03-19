@@ -157,9 +157,9 @@
   integrity sha512-4CgKEGCBOIOBGBNoH0dhN8TkP1Sj39fG4LGCXYw3JB7nQucVooJyq7AhIV+w7L4iZ+ln+y2KEfZugCmOIuzIeQ==
 
 "@ivinokur/workspace-client@latest":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@ivinokur/workspace-client/-/workspace-client-0.0.10.tgz#199163cd2b138b617ad89910175f1a247cb6fcc2"
-  integrity sha512-eoXC8aSpQdh5nS+P83Fo5lNWSs8k0Hqsj0ogNiQhIypWN/Lc+SbYc648513po7Sh3VWjGUJJMVgSFUMTFqTrQw==
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@ivinokur/workspace-client/-/workspace-client-0.0.11.tgz#2f688fed7ec854bd6fa632058b3761a867a37d98"
+  integrity sha512-MVFlj2SySM5BOkN2601l036pBjNjKdlkxmAflg2w8E8yrKVOguom773w7dF/c6vwCBJ7+hZsKrqYdxHK4B1zkQ==
   dependencies:
     "@eclipse-che/api" "^7.0.0-beta-4.0"
     axios "0.19.0"
