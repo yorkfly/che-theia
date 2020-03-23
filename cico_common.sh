@@ -15,7 +15,6 @@ function load_jenkins_vars() {
   if [ -e "jenkins-env.json" ]; then
     eval "$(./env-toolkit load -f jenkins-env.json \
             AKAMAI_CHE_AUTH \
-            CHE_BOT_GITHUB_TOKEN \
             QUAY_ECLIPSE_CHE_USERNAME \
             QUAY_ECLIPSE_CHE_PASSWORD \
             CHE_NPM_AUTH_TOKEN \
@@ -28,7 +27,6 @@ function load_jenkins_vars() {
             BUILD_URL \
             ghprbPullId)"
     #export provided GH token
-    export GITHUB_TOKEN=${CHE_BOT_GITHUB_TOKEN}
     export NPM_AUTH_TOKEN=${CHE_NPM_AUTH_TOKEN}
   fi
 }

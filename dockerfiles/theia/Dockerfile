@@ -14,21 +14,12 @@ FROM #{INCLUDE:docker/${BUILD_IMAGE_TARGET}/builder-from.dockerfile}
 
 WORKDIR ${HOME}
 
-# Export GITHUB_TOKEN into environment variable
-ARG GITHUB_TOKEN=''
-ENV GITHUB_TOKEN=$GITHUB_TOKEN
-
 ARG THEIA_GITHUB_REPO=eclipse-theia/theia
 
 # Define upstream version of theia to use
 ARG THEIA_VERSION=master
 
 ENV NODE_OPTIONS="--max-old-space-size=4096"
-
-#{IF:DO_REMOTE_CHECK}
-# Invalidate cache if any source code has changed
-ADD https://${GITHUB_TOKEN}:x-oauth-basic@api.github.com/repos/${THEIA_GITHUB_REPO}/git/${GIT_REF} /tmp/branch_info.json
-#ENDIF
 
 # Clone theia
 #{INCLUDE:docker/${BUILD_IMAGE_TARGET}/builder-clone-theia.dockerfile}
@@ -48,7 +39,7 @@ COPY asset-che-theia.tar.gz /tmp/asset-che-theia.tar.gz
 RUN mkdir -p ${HOME}/theia-source-code/che-theia/ && tar xzf /tmp/asset-che-theia.tar.gz -C ${HOME}/theia-source-code/che-theia/ && rm /tmp/asset-che-theia.tar.gz
 
 # run che:theia init command and alias che-theia repository to use local sources insted of cloning
-RUN che:theia init -c ${HOME}/theia-source-code/che-theia/che-theia-init-sources.yml --alias https://github.com/eclipse/che-theia=${HOME}/theia-source-code/che-theia
+RUN che-theia init -c ${HOME}/theia-source-code/che-theia/che-theia-init-sources.yml --alias https://github.com/eclipse/che-theia=${HOME}/theia-source-code/che-theia
 
 # cleanup theia folders that we don't need to compile
 RUN rm -rf ${HOME}/theia-source-code/examples/browser && \
@@ -75,24 +66,19 @@ RUN rm -rf ${HOME}/theia-source-code/examples/browser && \
     cat ${HOME}/theia-source-code/configs/root-compilation.tsconfig.json && \
     find ${HOME}/theia-source-code/che-theia -name "package.json" | xargs sed -i 's|concurrently -n \\"format,lint,compile\\" -c \\"red,green,blue\\" \\"yarn format\\" \\"yarn lint\\" \\"yarn compile\\"|concurrently -n \\"compile\\" -c \\"blue\\" \\"yarn compile\\"|'
 
-RUN che:theia cdn --theia="${CDN_PREFIX}" --monaco="${MONACO_CDN_PREFIX}"
+RUN che-theia cdn --theia="${CDN_PREFIX}" --monaco="${MONACO_CDN_PREFIX}"
 
 # Compile Theia
 #{INCLUDE:docker/${BUILD_IMAGE_TARGET}/builder-before-compile.dockerfile}
 
-# Unset GITHUB_TOKEN environment variable if it is empty.
-# This is needed for some tools which use this variable and will fail with 401 Unauthorized error if it is invalid.
-# For example, vscode ripgrep downloading is an example of such case.
-RUN if [ -z $GITHUB_TOKEN ]; then unset GITHUB_TOKEN; fi && \
-    yarn ${YARN_FLAGS}
+RUN yarn ${YARN_FLAGS}
 
 # Run into production mode
 #{INCLUDE:docker/${BUILD_IMAGE_TARGET}/builder-before-production.dockerfile}
-RUN che:theia production
+RUN che-theia production
 
 # Compile plugins
-RUN if [ -z $GITHUB_TOKEN ]; then unset GITHUB_TOKEN; fi && \
-    cd plugins && ./foreach_yarn
+RUN cd plugins && ./foreach_yarn
 
 # Add yeoman generator & vscode git plug-ins
 COPY asset-untagged-theia_yeoman_plugin.theia /home/theia-dev/theia-source-code/production/plugins/theia_yeoman_plugin.theia
