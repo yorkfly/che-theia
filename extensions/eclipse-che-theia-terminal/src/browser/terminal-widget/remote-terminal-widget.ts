@@ -32,6 +32,26 @@ export interface RemoteTerminalWidgetOptions extends Partial<TerminalWidgetOptio
     endpoint: string
 }
 
+export namespace RemoteTerminalOptions {
+    export function isRemoteTerminal(options: TerminalWidgetOptions): boolean {
+        const attributes = options.attributes;
+        if (!attributes) {
+            return false;
+        }
+
+        const containerName = attributes['CHE_MACHINE_NAME'];
+        if (containerName) {
+            return true;
+        }
+
+        const isRemoteValue = attributes['remote'];
+        if (isRemoteValue) {
+            return isRemoteValue.toLowerCase() === 'true' ? true : false;
+        }
+        return false;
+    }
+}
+
 export interface RemoteTerminalWidgetFactoryOptions extends Partial<TerminalWidgetOptions> {
     /* a unique string per terminal */
     created: string

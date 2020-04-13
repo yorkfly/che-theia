@@ -19,7 +19,7 @@ import { MenuBar as MenuBarWidget } from '@phosphor/widgets';
 import { TerminalKeybindingContext } from './keybinding-context';
 import { CHEWorkspaceService } from '../../common/workspace-service';
 import { TerminalWidget, TerminalWidgetOptions } from '@theia/terminal/lib/browser/base/terminal-widget';
-import { REMOTE_TERMINAL_WIDGET_FACTORY_ID, RemoteTerminalWidgetFactoryOptions } from '../terminal-widget/remote-terminal-widget';
+import { REMOTE_TERMINAL_WIDGET_FACTORY_ID, RemoteTerminalWidgetFactoryOptions, RemoteTerminalOptions } from '../terminal-widget/remote-terminal-widget';
 import { filterRecipeContainers } from './terminal-command-filter';
 import { EnvVariablesServer } from '@theia/core/lib/common/env-variables';
 import { isOSX } from '@theia/core/lib/common/os';
@@ -204,6 +204,10 @@ export class ExecTerminalFrontendContribution extends TerminalFrontendContributi
     }
 
     async newTerminal(options: TerminalWidgetOptions): Promise<TerminalWidget> {
+        if (!RemoteTerminalOptions.isRemoteTerminal(options)) {
+            return super.newTerminal(options);
+        }
+
         let containerName;
         let closeWidgetExitOrError: boolean = true;
 
