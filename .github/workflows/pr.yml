@@ -29,6 +29,6 @@ jobs:
         free -m 
         df -h
         docker images
-        docker images prune -f
+        docker image prune -f
         docker images
         df -h
