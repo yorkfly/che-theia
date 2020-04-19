@@ -12,13 +12,10 @@
 name: CI
 
 # Trigger the workflow on push or pull request
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        dist: [ 'alpine', 'ubi8' ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -28,4 +25,6 @@ jobs:
       with:
         node-version: '10.x'
     - name: build
-      run: ./build.sh --build-args:THEIA_VERSION=master --tag:next --branch:master --git-ref:refs\\/heads\\/master --dockerfile:Dockerfile.${{matrix.dist}}
+      run:  |
+        free -m 
+        docker images
