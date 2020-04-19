@@ -27,4 +27,8 @@ jobs:
     - name: build
       run:  |
         free -m 
+        df -h
         docker images
+        docker prune images
+        docker images
+        df -h
